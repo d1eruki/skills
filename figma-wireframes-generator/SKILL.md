@@ -16,7 +16,22 @@ Create strict desktop landing-page wireframes in Figma from user-supplied text. 
 
 ## Intake
 
-Before generating anything, ask exactly 5 concise clarifying questions. Cover the missing decisions that most affect layout and UX, such as:
+Before generating anything, run a 5-question intake as a step-by-step questionnaire.
+
+Ask one question at a time, wait for the user's answer, then ask the next question. Do not ask all 5 questions in one message.
+
+Use the native interactive questionnaire tool when it is available, such as `request_user_input` or `ask_user_question`. Do not simulate the questionnaire as a plain text list when a native UI question tool is available.
+
+For each native UI question:
+
+- ask exactly one question per tool call
+- provide 2-3 concise mutually exclusive options
+- put the recommended/default option first when there is a sensible default
+- rely on the tool's built-in custom/Other answer field when available
+
+If no native UI question tool is available in the current environment, explain briefly that the interactive questionnaire UI is unavailable and ask whether to continue with plain text questions.
+
+Use the user's previous answers to choose the next most useful question. Cover the missing decisions that most affect layout and UX, such as:
 
 - page list and hierarchy
 - target audience
@@ -27,7 +42,19 @@ Before generating anything, ask exactly 5 concise clarifying questions. Cover th
 - footer links
 - whether supplied text may be edited or extended
 
-If the user provides limited information, ask the 5 questions and wait. Act as a competent UX designer, but do not silently invent core product content.
+If the user provides limited information, complete the 5-question questionnaire and wait after each question. Act as a competent UX designer, but do not silently invent core product content.
+
+Example native questionnaire content:
+
+```text
+Header: Goal
+Question: What is the primary conversion goal for this landing page?
+Options:
+- Lead form submission
+- Book a call
+- Learn more
+Custom answer: handled by the UI's Other field
+```
 
 ## Copy Rules
 
@@ -73,7 +100,7 @@ Header, footer, and button components may use simple gray containers, text, and 
 ## Generation Workflow
 
 1. Parse the user's supplied structure into pages, sections, headings, body text, CTAs, and repeated elements.
-2. Ask exactly 5 clarifying questions and wait for answers.
+2. Ask exactly 5 clarifying questions as a sequential questionnaire, one question per user turn.
 3. Summarize the planned pages and section order briefly.
 4. Load `figma:figma-use`.
 5. Use `use_figma` to create or update the wireframes in the current Figma file.
