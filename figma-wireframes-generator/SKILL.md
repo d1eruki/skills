@@ -62,6 +62,7 @@ Custom answer: handled by the UI's Other field
 - Do not add generic marketing copy, placeholder benefits, invented slogans, or filler text.
 - Preserve the user's text intent and meaning.
 - It is acceptable to improve structure, hierarchy, grouping, and section order when doing so follows UX best practices.
+- For Russian copy, avoid dangling short prepositions, conjunctions, and particles at line ends by keeping them with the following word when possible.
 - If the user explicitly asks to add, expand, rewrite, complete, or improve the copy, ignore the no-added-copy rule for that request and provide the requested copy support.
 - If a UI element needs text but the user did not supply it, ask for it unless it is a purely structural label such as "Header", "Footer", or an internal layer name.
 
@@ -79,8 +80,13 @@ Always create desktop wireframes only.
 - Apply a layout grid to every wireframe page using these values.
 - Center page content inside each frame.
 - Constrain main section content to the `breakpoint` variable.
+- Every page section must be width `1280`, with horizontal padding `60`, inner content width `1160`, and auto height based on content.
 - Use auto layout for frames, sections, component internals, and repeated structures.
-- Set text nodes to hug width and hug height whenever possible.
+- Use real Figma Auto Layout grids for repeated card groups with predictable columns. Recreate grid containers from scratch when changing row or column structure.
+- Set text to hug height while constraining width to the parent content area. Do not make long text hug width, because it can expand cards and break the grid.
+- Do not wrap individual text nodes in meaningless one-text frames. Let the parent auto-layout container handle spacing and alignment.
+- Normalize generated sizes after building components and pages so auto-layout frames do not collapse to height `1`.
+- Keep UI language consistent. Do not randomly mix Russian and English labels; preserve product terms when appropriate.
 - Use restrained layer names: clear enough for a designer, not obsessively detailed.
 - Use gray-scale fills and strokes only unless the user explicitly asks for visual styling.
 - Do not create final UI polish, brand styling, illustrations, photos, or decorative visual design.
@@ -106,9 +112,13 @@ Header, footer, and button components may use simple gray containers, text, and 
 5. Use `use_figma` to create or update the wireframes in the current Figma file.
 6. Create desktop variables, grid style, and the component set.
 7. Build each page as a 1280 px wide auto-layout frame with the grid applied.
-8. Insert header, footer, and button instances instead of detached copies.
-9. Use the supplied text exactly unless the user asked for copy expansion.
-10. Run a quick Figma-side check that no generated page contains detached header/footer/button structures.
+8. Build repeated card groups as fresh `layoutMode = "GRID"` containers when the column structure is predictable.
+9. Insert header, footer, and button instances instead of detached copies.
+10. Use the supplied text exactly unless the user asked for copy expansion.
+11. Run a final sizing pass: fit standalone components first, then page sections, then root page frames.
+12. Run a Figma-side validation for section widths, grid row counts, overflow, text sizing, and detached header/footer/button structures.
+13. Run a final text audit for mixed-language UI labels.
+14. For visual QA, use Figma MCP `get_screenshot`. If shell networking is restricted, do not require `curl`; request an inline/base64 screenshot when visual inspection is needed, or combine the MCP screenshot metadata with Figma-side structural checks.
 
 ## UX Guidance
 
