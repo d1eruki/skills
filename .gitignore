@@ -1,0 +1,8 @@
+# JetBrains IDEs (WebStorm, IntelliJ IDEA, etc.)
+.idea/
+*.iml
+
+# WebStorm/JetBrains generated files that can appear outside .idea
+out/
+
+/.idea/
