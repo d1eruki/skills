@@ -1,6 +1,6 @@
 ---
 name: figma-wireframes-generator
-description: Generate desktop low-fidelity landing page wireframes and supporting pages in the currently open Figma file. Use when the user asks Codex to create, draw, build, or generate Figma wireframes for landing pages from supplied text structure, headings, sections, page copy, or related page outlines. Trigger for landing wireframes only, including main landing pages, policy pages, pricing/detail pages, thank-you pages, and other landing-adjacent pages; do not use for mobile screens, dashboards, web apps, diagrams, or pixel-perfect visual design.
+description: Generate desktop low-fidelity landing page wireframes and supporting pages in the currently open Figma file. Use when the user asks the agent to create, draw, build, or generate Figma wireframes for landing pages from supplied text structure, headings, sections, page copy, or related page outlines. Trigger for landing wireframes only, including main landing pages, policy pages, pricing/detail pages, thank-you pages, and other landing-adjacent pages; do not use for mobile screens, dashboards, web apps, diagrams, or pixel-perfect visual design.
 ---
 
 # Figma Wireframes Generator
@@ -9,10 +9,19 @@ Create strict desktop landing-page wireframes in Figma from user-supplied text. 
 
 ## Required Skills And Tools
 
-- Load `figma:figma-use` before every `use_figma` write call.
-- Use only `use_figma` for generation. Do not call `generate_diagram`, `generate_deck`, or `generate_figma_design` for this skill.
+- Use the available Figma MCP write tool for generation:
+  - Codex/OpenAI: load `figma:figma-use` before every `use_figma` write call.
+  - Claude Code: use the configured Figma MCP write tool equivalent to `use_figma`.
+- If no Figma MCP write tool is available, ask the user to connect/configure Figma MCP instead of generating non-Figma artifacts.
+- Do not call `generate_diagram`, `generate_deck`, or `generate_figma_design` for this skill.
 - Work in the open or user-provided Figma file. Do not create a new Figma file unless the user explicitly asks for one.
-- For Figma API implementation patterns, read `references/figma-wireframe-api.md` only when preparing code for `use_figma`.
+- For Figma API implementation patterns, read `references/figma-wireframe-api.md` only when preparing JavaScript for the Figma MCP write tool.
+
+## Runtime Support
+
+This skill supports both Codex/OpenAI and Claude Code. Keep the workflow, constraints, component rules, and `references/figma-wireframe-api.md` shared across both runtimes.
+
+`agents/openai.yaml` is OpenAI/Codex UI metadata only. Claude Code should rely on `SKILL.md` and the bundled references.
 
 ## Intake
 
@@ -108,8 +117,8 @@ Header, footer, and button components may use simple gray containers, text, and 
 1. Parse the user's supplied structure into pages, sections, headings, body text, CTAs, and repeated elements.
 2. Ask exactly 5 clarifying questions as a sequential questionnaire, one question per user turn.
 3. Summarize the planned pages and section order briefly.
-4. Load `figma:figma-use`.
-5. Use `use_figma` to create or update the wireframes in the current Figma file.
+4. Use the available Figma MCP write tool: `use_figma` in Codex/OpenAI after loading `figma:figma-use`, or the configured equivalent in Claude Code.
+5. Create or update the wireframes in the current Figma file.
 6. Create desktop variables, grid style, and the component set.
 7. Build each page as a 1280 px wide auto-layout frame with the grid applied.
 8. Build repeated card groups as fresh `layoutMode = "GRID"` containers when the column structure is predictable.
