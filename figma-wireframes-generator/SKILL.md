@@ -21,7 +21,7 @@ Create strict desktop landing-page wireframes in Figma from user-supplied text. 
 
 This skill supports both Codex/OpenAI and Claude Code. Keep the workflow, constraints, component rules, and `references/figma-wireframe-api.md` shared across both runtimes.
 
-`agents/openai.yaml` is OpenAI/Codex UI metadata only. Claude Code should rely on `SKILL.md` and the bundled references.
+`agents/openai.yaml` is OpenAI/Codex UI metadata only. Claude Code does not require a separate `agents/claude.yaml`; its skill metadata is the YAML frontmatter in `SKILL.md`.
 
 ## Intake
 
