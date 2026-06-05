@@ -349,18 +349,18 @@ If matching a reference page, infer the generated page language from the referen
 
 If creating a new wireframe without a reference, ask the language question during intake.
 
-If the landing page is generated in Russian:
+Selected-language rules apply equally to Russian and English. Neither language is preferred.
 
-- section headings should be Russian
-- card titles should be Russian unless they are product terms
+- section headings should follow the selected or inferred page language
+- card titles should follow the selected or inferred page language unless they are product terms
 - CTA labels should follow the selected language
-- product terms such as `crypto top-up`, `Apple Pay`, `Google Pay`, `Premium`, `KYC`, and `OTP` may remain English
+- product terms such as `crypto top-up`, `Apple Pay`, `Google Pay`, `Premium`, `KYC`, and `OTP` may remain in their established product language
 
 Run a final text audit for mixed-language UI labels.
 
 ## Russian Typography
 
-Avoid dangling short words at the end of lines in Russian UI copy. Keep short prepositions, conjunctions, and particles with the following word when possible.
+Avoid dangling short words at the end of lines in Russian UI copy when possible. Keep short prepositions, conjunctions, and particles with the following word when doing so does not make spacing or wrapping worse.
 
 Examples of words to keep with the next word:
 
@@ -371,6 +371,26 @@ Use non-breaking spaces when preserving the user's exact text does not forbid ty
 ```js
 function preventRussianDanglingWords(text) {
   return text.replace(/\b(в|во|на|с|со|к|ко|у|о|об|от|до|за|из|по|для|при|и|а|но|не)\s+/gi, "$1\u00A0");
+}
+```
+
+Do not rewrite wording just to fix typography. Only join short words to the following word.
+
+Do not force typographic fixes with manual line breaks. Use non-breaking spaces for dangling short words and let container width determine wrapping.
+
+## English Typography
+
+Avoid dangling short words at the end of lines in English UI copy when possible. Keep short articles, prepositions, and conjunctions with the following word when doing so does not make spacing or wrapping worse.
+
+Examples of words to keep with the next word:
+
+- `a`, `an`, `the`, `of`, `to`, `in`, `on`, `at`, `by`, `for`, `with`, `and`, `or`
+
+Use non-breaking spaces when preserving the user's exact text does not forbid typographic cleanup:
+
+```js
+function preventEnglishDanglingWords(text) {
+  return text.replace(/\b(a|an|the|of|to|in|on|at|by|for|with|and|or)\s+/gi, "$1\u00A0");
 }
 ```
 

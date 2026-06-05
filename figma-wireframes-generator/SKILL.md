@@ -69,7 +69,8 @@ Custom answer: handled by the UI's Other field
 - Do not add generic marketing copy, placeholder benefits, invented slogans, or filler text.
 - Preserve the user's text intent and meaning.
 - It is acceptable to improve structure, hierarchy, grouping, and section order when doing so follows UX best practices.
-- For Russian copy, avoid dangling short prepositions, conjunctions, and particles at line ends by keeping them with the following word when possible.
+- For Russian copy, avoid dangling short prepositions, conjunctions, and particles at line ends when possible by keeping them with the following word.
+- For English copy, avoid dangling short articles, prepositions, and conjunctions at line ends when possible by keeping them with the following word.
 - Do not insert manual line breaks into supplied text for visual composition. Let text wrap naturally from container width; preserve user-provided line breaks and use non-breaking spaces only to prevent dangling short words.
 - If the user explicitly asks to add, expand, rewrite, complete, or improve the copy, ignore the no-added-copy rule for that request and provide the requested copy support.
 - If a UI element needs text but the user did not supply it, ask for it unless it is a purely structural label such as "Header", "Footer", or an internal layer name.
