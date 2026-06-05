@@ -96,6 +96,7 @@ Always create desktop wireframes only.
 - Set text to hug height while constraining width to the parent content area. Do not make long text hug width, because it can expand cards and break the grid.
 - Do not wrap individual text nodes in meaningless one-text frames. Let the parent auto-layout container handle spacing and alignment.
 - Normalize generated sizes after building components and pages so auto-layout frames do not collapse to height `1`.
+- Never generate fractional numeric layout values. Round all computed positions, sizes, gaps, padding, and typography values to whole pixels before applying them in Figma.
 - Keep UI language consistent. Do not randomly mix Russian and English labels; preserve product terms when appropriate.
 - Use restrained layer names: clear enough for a designer, not obsessively detailed.
 - Use gray-scale fills and strokes only unless the user explicitly asks for visual styling.

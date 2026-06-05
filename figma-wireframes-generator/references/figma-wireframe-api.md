@@ -182,7 +182,7 @@ The `+24` prevents clipping caused by Figma fractional grid placement.
 Expected rows map for common landing sections:
 
 ```js
-{
+const expectedRowsBySection = {
   "Benefits grid": 1,
   "Steps": 1,
   "Use cases grid": 2,
@@ -192,7 +192,7 @@ Expected rows map for common landing sections:
   "Security grid": 2,
   "Audience grid": 2,
   "Blog cards": 1
-}
+};
 ```
 
 ## Section Width Rules
@@ -211,6 +211,56 @@ Validation:
 - no direct content frame inside a section may exceed `1160`
 - no section may exceed `1280`
 - section children should sit inside the 60 px side padding
+
+## Integer Values Only
+
+Never generate fractional numeric values in Figma wireframes.
+
+Apply only whole-number values for:
+
+- `x`, `y`
+- `width`, `height`
+- padding
+- item spacing
+- grid gaps
+- card widths
+- text widths
+- font sizes
+- line heights
+- corner radius
+- stroke weight
+
+Round every computed value before using `resize`, assigning positions, setting spacing, or applying typography:
+
+```js
+const px = value => Math.round(value);
+
+node.x = px(node.x);
+node.y = px(node.y);
+node.resize(px(width), px(height));
+frame.itemSpacing = px(frame.itemSpacing);
+frame.paddingLeft = px(frame.paddingLeft);
+frame.paddingRight = px(frame.paddingRight);
+```
+
+For grid calculations, distribute any remainder intentionally so total width remains exact and no card receives a fractional width:
+
+```js
+function integerColumns(containerWidth, gap, columns) {
+  const totalGap = gap * (columns - 1);
+  const base = Math.floor((containerWidth - totalGap) / columns);
+  const remainder = (containerWidth - totalGap) - base * columns;
+  return Array.from({ length: columns }, (_, index) =>
+    base + (index < remainder ? 1 : 0)
+  );
+}
+```
+
+Validation:
+
+- no generated node has fractional `x`, `y`, `width`, or `height`
+- no spacing, padding, grid gap, text width, font size, or line height is fractional
+- no computed layout uses `.5` values as a visual workaround
 
 ## Language Consistency
 
