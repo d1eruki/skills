@@ -26,7 +26,7 @@ This skill supports both Codex/OpenAI and Claude Code. Keep the workflow, constr
 
 ## Intake
 
-Before generating anything, run a 5-question intake as a step-by-step questionnaire.
+Before generating anything, run a fixed 5-question intake as a step-by-step questionnaire.
 
 Ask one question at a time, wait for the user's answer, then ask the next question. Do not ask all 5 questions in one message.
 
@@ -41,18 +41,15 @@ For each native UI question:
 
 If no native UI question tool is available in the current environment, explain briefly that the interactive questionnaire UI is unavailable and ask whether to continue with plain text questions.
 
-Use the user's previous answers to choose the next most useful question. Cover the missing decisions that most affect layout and UX, such as:
+Use these 5 questions, adapting the options to the user's supplied brief:
 
-- page list and hierarchy
-- target audience
-- primary conversion goal
-- desired header navigation items
-- CTA labels and destinations
-- required sections and ordering
-- footer links
-- whether supplied text may be edited or extended
+1. Mode: ask whether this is a new wireframe, a page that must match a reference wireframe/page, or an update/extension of an existing wireframe.
+2. Source/reference: if reference mode, ask which frame/page is the strict visual reference; if new mode, confirm whether to use only the supplied text structure; if update mode, ask what must be preserved.
+3. Conversion goal: confirm the primary CTA/outcome, using options derived from the supplied brief.
+4. Language: ask only for new wireframes. If reference mode, infer language from the reference page and ask only if the reference language conflicts with the supplied text. If update mode, preserve the existing page language unless the user asks otherwise.
+5. Content/editing permission: confirm whether the agent must use supplied copy exactly, may lightly restructure only, or may expand/rewrite copy.
 
-If the user provides limited information, complete the 5-question questionnaire and wait after each question. Act as a competent UX designer, but do not silently invent core product content.
+If the user already supplied enough information, the questions should be confirmation-style rather than abstract. Act as a competent UX designer, but do not silently invent core product content.
 
 Example native questionnaire content:
 
@@ -81,6 +78,12 @@ Custom answer: handled by the UI's Other field
 
 Always create desktop wireframes only.
 
+Mode priorities:
+
+- New wireframe: use the default low-fidelity gray wireframe style.
+- Reference mode: strict reference style matching overrides the default gray-only look, but never overrides integer-only values, supplied-copy rules, or semantic typographic hierarchy.
+- Update mode: preserve existing page patterns and components unless the user explicitly asks to replace them.
+
 - Frame width: `1280`
 - Variable mode name: `desktop`
 - Variables:
@@ -101,8 +104,9 @@ Always create desktop wireframes only.
 - Never generate fractional numeric layout values. Round all computed positions, sizes, gaps, padding, and typography values to whole pixels before applying them in Figma.
 - Keep UI language consistent. Do not randomly mix Russian and English labels; preserve product terms when appropriate.
 - When matching an existing reference page, copy visual values literally by role and pattern: colors, strokes, radii, spacing, typography, buttons, cards, forms, placeholders, header, and footer.
+- Even in reference mode, round fractional reference values before generating. If fractional values are found in the reference, mention them in the final message when practical so the user can fix the source file.
 - Use restrained layer names: clear enough for a designer, not obsessively detailed.
-- Use gray-scale fills and strokes only unless the user explicitly asks for visual styling.
+- Use gray-scale fills and strokes only in new-wireframe mode unless the user explicitly asks for visual styling. In reference or update mode, follow the reference/existing page styles instead.
 - Do not create final UI polish, brand styling, illustrations, photos, or decorative visual design.
 
 ## Component Rules
@@ -115,12 +119,12 @@ Create reusable components beside the page frames before composing pages:
 
 Use instances of those components in every landing page and supporting page. Do not leave non-component headers, footers, or buttons inside the wireframe pages.
 
-Header, footer, and button components may use simple gray containers, text, and spacing. They should be structurally useful for later design work rather than visually final.
+In new-wireframe mode, header, footer, and button components may use simple gray containers, text, and spacing. In reference or update mode, reuse existing components or recreate their measured visual style instead of creating new simple gray components.
 
 ## Generation Workflow
 
 1. Parse the user's supplied structure into pages, sections, headings, body text, CTAs, and repeated elements.
-2. Ask exactly 5 clarifying questions as a sequential questionnaire, one question per user turn.
+2. Ask exactly 5 fixed intake questions as a sequential questionnaire, one question per user turn.
 3. Summarize the planned pages and section order briefly.
 4. Use the available Figma MCP write tool: `use_figma` in Codex/OpenAI after loading `figma:figma-use`, or the configured equivalent in Claude Code.
 5. If a reference page is requested, inspect it first, extract a style inventory, and create a content-role to reference-style role map.

@@ -41,6 +41,8 @@ Use literal values from the reference wherever a matching pattern exists. Do not
 
 If the reference card has no stroke, the generated card must have no stroke. If the reference card has radius `8`, use radius `8`. If the reference section description uses a muted gray, use the same muted gray. If the reference card body uses a different gray, preserve that distinction.
 
+Exception: never copy fractional numeric values into generated frames. Round fractional reference values to whole numbers before generating. Track notable fractional values found in the reference and mention them in the final response when practical.
+
 Create a role map before building:
 
 ```text
@@ -148,7 +150,7 @@ Reason: Figma may keep stale row or track state, causing UI to show doubled rows
 1. Collect existing card nodes.
 2. Create a new frame.
 3. Set `layoutMode = "GRID"` before appending cards.
-4. Set `gridColumnCount`, `gridRowCount`, `gridColumnGap`, and `gridRowGap` on the fresh grid.
+4. Set `gridColumnCount`, `gridColumnGap`, and `gridRowGap` on the fresh grid. Prefer setting `gridRowCount` when supported.
 5. Set every card width from the target column width before placing it.
 6. Insert cards with `appendChildAt`.
 7. Set card width again after placing it.
@@ -172,7 +174,11 @@ Use these defaults:
 ```js
 grid.layoutMode = "GRID";
 grid.gridColumnCount = columns;
-grid.gridRowCount = rows;
+try {
+  grid.gridRowCount = rows;
+} catch (error) {
+  // Preferred path failed; continue with Figma auto-tracked rows.
+}
 grid.gridColumnGap = 20;
 grid.gridRowGap = 20;
 grid.primaryAxisSizingMode = "FIXED";
@@ -180,7 +186,7 @@ grid.counterAxisSizingMode = "FIXED";
 grid.resize(1160, computedHeight);
 ```
 
-If setting `gridRowCount` throws because the current Figma context uses auto-tracked rows, do not repair a broken existing grid by mutation. Keep the fresh grid, place children explicitly, size from child bounds, and validate the expected row count from child positions.
+`gridRowCount` is the preferred path. Auto-tracked rows are the fallback path. If setting `gridRowCount` throws because the current Figma context uses auto-tracked rows, do not treat it as a generation failure and do not repair a broken existing grid by mutation. Keep the fresh grid, place children explicitly, size from child bounds, and validate the expected row count from child positions.
 
 ### Card Width Formula
 
@@ -333,10 +339,15 @@ Validation:
 - no generated node has fractional `x`, `y`, `width`, or `height`
 - no spacing, padding, grid gap, text width, font size, or line height is fractional
 - no computed layout uses `.5` values as a visual workaround
+- fractional values found in a reference are reported to the user when practical, but never generated into the new wireframe
 
 ## Language Consistency
 
 Do not mix Russian and English randomly.
+
+If matching a reference page, infer the generated page language from the reference page. Ask about language only when the reference language conflicts with the supplied text or the user explicitly requests a different language.
+
+If creating a new wireframe without a reference, ask the language question during intake.
 
 If the landing page is generated in Russian:
 
@@ -600,13 +611,15 @@ Create components before pages:
 
 Use `component.createInstance()` for every page occurrence. Do not detach instances.
 
-Use simple gray fills:
+In new-wireframe mode, use simple gray fills:
 
 - page background `#FFFFFF`
 - section placeholder `#F2F2F2`
 - component fill `#E6E6E6`
 - strokes `#BDBDBD`
 - text `#1F1F1F`
+
+In reference or update mode, use the measured fills, strokes, and text colors from the reference or existing page instead.
 
 ## Final Check
 
@@ -616,10 +629,20 @@ Before ending the `use_figma` script, inspect generated page frames:
 - each page uses vertical auto layout
 - header/footer/button occurrences are instances
 - page width is 1280
+- sections are width `1280`, direct content frames and grids are no wider than `1160`, and children sit inside 60 px side padding
+- intended card groups use `layoutMode === "GRID"` and expected row counts match actual child positions
+- no child overflows its parent
+- no generated node has fractional `x`, `y`, `width`, `height`, spacing, padding, grid gap, text width, font size, or line height
 - no obvious text node has empty generated filler such as lorem ipsum
 - no text node has `textAutoResize = "NONE"`
 - no non-instance text node has `height <= 2`
 - no text node is wider than `parent.width - parent horizontal padding`
 - no text inside a card overflows below the card
+- typographic hierarchy is valid by role
+- body paragraph text is at least `16px`
+- captions are `12-14px`
+- generated UI labels pass the language consistency audit
+- if matching a reference page, visual parity was checked against the reference for cards, strokes, radii, text colors, typography, spacing rhythm, buttons, header, and footer
+- fractional numeric values found in the reference were reported when practical
 
 For visual QA, use Figma MCP `get_screenshot`. Do not require shell `curl` download of the screenshot URL; sandboxed DNS can fail even when Figma generation succeeded. If visual inspection is required and shell download fails, request an inline/base64 screenshot from the MCP tool when available, or combine the screenshot metadata with the structural checks above.
