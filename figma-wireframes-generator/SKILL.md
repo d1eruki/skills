@@ -114,7 +114,9 @@ Mode priorities:
 
 ## Component Rules
 
-Create reusable components beside the page frames before composing pages:
+Component behavior depends on the generation mode.
+
+In new-wireframe mode, create reusable components beside the page frames before composing pages:
 
 - Header component
 - Footer component
@@ -122,7 +124,11 @@ Create reusable components beside the page frames before composing pages:
 
 Use instances of those components in every landing page and supporting page. Do not leave non-component headers, footers, or buttons inside the wireframe pages. This applies recursively to every button-like element, including form submit buttons, modal buttons, secondary buttons, and styled text buttons.
 
-In new-wireframe mode, header, footer, and button components may use simple gray containers, text, and spacing. In reference or update mode, reuse existing components or recreate their measured visual style instead of creating new simple gray components.
+In reference mode, do not create new Header, Footer, or Button components when matching components or component instances exist in the reference page. Reuse the reference components by creating instances from the same main components. If the reference contains detached frames instead of components, componentize the reference pattern once and use instances of that component.
+
+In update mode, preserve and reuse existing components from the page/file unless the user explicitly asks to replace them.
+
+In new-wireframe mode, header, footer, and button components may use simple gray containers, text, and spacing.
 
 ## Generation Workflow
 
@@ -132,7 +138,7 @@ In new-wireframe mode, header, footer, and button components may use simple gray
 4. Use the available Figma MCP write tool: `use_figma` in Codex/OpenAI after loading `figma:figma-use`, or the configured equivalent in Claude Code.
 5. If a reference page is requested, inspect it first, extract a style inventory, and create a content-role to reference-style role map.
 6. Create or update the wireframes in the current Figma file.
-7. Create desktop variables, grid style, and the component set.
+7. Create desktop variables and grid style. Create a new component set only in new-wireframe mode; in reference/update mode, reuse components from the reference or existing file.
 8. Build each page as a 1280 px wide auto-layout frame with the grid applied.
 9. Build repeated card groups as fresh `layoutMode = "GRID"` containers when the column structure is predictable.
 10. Insert header, footer, and button instances instead of detached copies.

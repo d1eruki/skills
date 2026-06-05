@@ -710,13 +710,26 @@ Validation:
 
 ## Components
 
-Create components before pages:
+Component behavior depends on mode.
+
+In new-wireframe mode, create components before pages:
 
 - `Header / Wireframe`
 - `Footer / Wireframe`
 - `Button / Wireframe`
 
 Use `component.createInstance()` for every page occurrence. Do not detach instances.
+
+In reference mode, do not create new Header, Footer, or Button components when matching components or component instances exist in the reference page. Reuse the reference component sources:
+
+- find Header/Footer/Button instances on the reference page
+- get their main components when possible
+- create new instances from those main components for the generated page
+- preserve component variants/properties when relevant
+
+If the reference page uses detached frames instead of components, componentize the reference pattern once near the reference/component area and use instances of that component. Do not create a separate simple gray replacement component.
+
+In update mode, preserve and reuse existing components in the file/page unless the user explicitly asks to replace them.
 
 ## Button Component Enforcement
 
@@ -738,6 +751,8 @@ After generation, validate all button-like nodes recursively:
 - text labels that represent actions
 
 If any button-like element is a raw `FRAME`, convert it to a component or replace it with an instance of the Button component.
+
+In reference mode, replacement must use the Button component from the reference pattern when available, not a newly generated Button component.
 
 In new-wireframe mode, use simple gray fills:
 
