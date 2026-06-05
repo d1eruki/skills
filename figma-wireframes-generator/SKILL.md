@@ -86,15 +86,11 @@ Mode priorities:
 - Update mode: preserve existing page patterns and components unless the user explicitly asks to replace them.
 
 - Frame width: `1280`
-- Variable mode name: `desktop`
-- Variables:
-  - `columns = 12`
-  - `breakpoint = 1280`
-  - `margin = 60`
-  - `gutter = 20`
-- Apply a layout grid to every wireframe page using these values.
+- Desktop grid constants: `columns = 12`, `margin = 60`, `gutter = 20`
+- Content width: `1160`
+- Apply a visual layout grid to every wireframe page using these fixed constants.
 - Center page content inside each frame.
-- Constrain main section content to the `breakpoint` variable.
+- Constrain main section content to `1160`.
 - Every page section must be width `1280`, with horizontal padding `60`, inner content width `1160`, and auto height based on content.
 - Use auto layout for frames, sections, component internals, and repeated structures.
 - Calculate content width recursively at every nesting level as `parent.width - parent.paddingLeft - parent.paddingRight`; constrain children to the parent content area, not the parent frame width.
@@ -138,7 +134,7 @@ In new-wireframe mode, header, footer, and button components may use simple gray
 4. Use the available Figma MCP write tool: `use_figma` in Codex/OpenAI after loading `figma:figma-use`, or the configured equivalent in Claude Code.
 5. If a reference page is requested, inspect it first, extract a style inventory, and create a content-role to reference-style role map.
 6. Create or update the wireframes in the current Figma file.
-7. Create desktop variables and grid style. Create a new component set only in new-wireframe mode; in reference/update mode, reuse components from the reference or existing file.
+7. Apply the desktop visual layout grid. Create a new component set only in new-wireframe mode; in reference/update mode, reuse components from the reference or existing file.
 8. Build each page as a 1280 px wide auto-layout frame with the grid applied.
 9. Build repeated card groups as fresh `layoutMode = "GRID"` containers when the column structure is predictable.
 10. Insert header, footer, and button instances instead of detached copies.

@@ -89,37 +89,6 @@ Structural validation is not enough. Run a visual parity check against the refer
 
 Use screenshots for the reference page and the generated page when possible. Inspect the first screen, card sections, form section, FAQ, final CTA, and footer. If the new page differs in visual language, fix it before answering.
 
-## Variables
-
-Create or reuse a collection named `Wireframe`. Add a mode named exactly `desktop`. Define number variables:
-
-- `columns = 12`
-- `breakpoint = 1280`
-- `margin = 60`
-- `gutter = 20`
-
-If existing variables with these names exist in the collection, update their desktop values instead of duplicating them.
-
-When adding the `desktop` mode, do not assume `collection.addMode("desktop").modeId` is immediately usable. Prefer this safer pattern:
-
-```js
-let collection = (await figma.variables.getLocalVariableCollectionsAsync())
-  .find(c => c.name === "Wireframe");
-
-if (!collection) {
-  collection = figma.variables.createVariableCollection("Wireframe");
-}
-
-if (!collection.modes.some(m => m.name === "desktop")) {
-  collection.addMode("desktop");
-  collection = (await figma.variables.getLocalVariableCollectionsAsync())
-    .find(c => c.name === "Wireframe");
-}
-
-const modeId = collection.modes.find(m => m.name === "desktop")?.modeId;
-if (!modeId) throw new Error("Wireframe desktop variable mode was not created");
-```
-
 ## Layout Grid
 
 Apply this grid to each 1280 px page frame:
