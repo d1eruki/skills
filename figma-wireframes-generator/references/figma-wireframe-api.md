@@ -9,6 +9,78 @@ Load this reference only when writing JavaScript for `use_figma`.
 - Do not set `figma.currentPage` directly. Use `await figma.setCurrentPageAsync(page)` when changing pages.
 - Prefer deterministic names: `Wireframes`, `Components`, `Landing`, `Pricing`, `Thank You`.
 
+## Reference Style Matching
+
+When the user asks to make a page consistent with another page, use that page as a strict visual reference, not loose inspiration.
+
+Trigger phrases include:
+
+- "in the style of"
+- "like this page"
+- "like the main page"
+- "as the main page"
+- "consistent with"
+- "based on this page"
+- "по примеру"
+- "в стиле"
+- "как главная"
+- "консистентно с"
+
+Before generating the new wireframe, inspect the reference frame and extract a style inventory:
+
+- page width, content width, grid, margins, gutters
+- section paddings, section gaps, section background fills
+- typography roles: hero heading, section heading, section description, card title, card body, labels, CTA text, footer text, form label, input placeholder
+- fills, strokes, stroke weights, corner radii, padding, gaps, and heights for cards
+- button fills, strokes, radii, padding, text styles
+- form field fills, strokes, radii, padding, text styles
+- divider and placeholder styles
+- header/footer component usage
+
+Use literal values from the reference wherever a matching pattern exists. Do not approximate colors, strokes, radii, or spacing.
+
+If the reference card has no stroke, the generated card must have no stroke. If the reference card has radius `8`, use radius `8`. If the reference section description uses a muted gray, use the same muted gray. If the reference card body uses a different gray, preserve that distinction.
+
+Create a role map before building:
+
+```text
+source content role -> reference visual role
+```
+
+Examples:
+
+- new section description -> reference section description style
+- new card title -> reference card title style
+- new card body -> reference card body style
+- new process step -> reference process step card style
+- new final CTA -> reference final CTA pattern
+
+Do not invent new visual patterns when the reference page already contains a similar pattern. Reuse or clone existing components and instances when possible. If cloning is not practical, recreate the pattern with the same measured values.
+
+Choose matching patterns:
+
+- audience cards on a new page should use audience-card parameters from the reference when available
+- process steps should use process-step parameters from the reference when available
+- final CTA should use the final CTA pattern from the reference when available
+- form fields should use the closest input/form pattern from the reference when available
+- if no exact pattern exists, use the nearest low-fidelity surface style while preserving measured card/text parameters
+
+When preserving source content, do not add semantic blocks, stats, benefits, CTA labels, labels, captions, decorative text, or placeholder copy that were not supplied by the user or present in the source page.
+
+Structural validation is not enough. Run a visual parity check against the reference page before the final answer:
+
+- card fills match
+- strokes match
+- corner radii match
+- text colors match by role
+- typography scale matches by role
+- section spacing rhythm matches
+- buttons match
+- header/footer are reused or visually identical
+- the new page does not look like a separate design system
+
+Use screenshots for the reference page and the generated page when possible. Inspect the first screen, card sections, form section, FAQ, final CTA, and footer. If the new page differs in visual language, fix it before answering.
+
 ## Variables
 
 Create or reuse a collection named `Wireframe`. Add a mode named exactly `desktop`. Define number variables:

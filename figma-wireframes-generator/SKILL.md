@@ -1,6 +1,6 @@
 ---
 name: figma-wireframes-generator
-description: Generate desktop low-fidelity landing page wireframes and supporting pages in the currently open Figma file. Use when the user asks the agent to create, draw, build, or generate Figma wireframes for landing pages from supplied text structure, headings, sections, page copy, or related page outlines. Trigger for landing wireframes only, including main landing pages, policy pages, pricing/detail pages, thank-you pages, and other landing-adjacent pages; do not use for mobile screens, dashboards, web apps, diagrams, or pixel-perfect visual design.
+description: Generate desktop low-fidelity landing page wireframes and supporting pages in the currently open Figma file. Use when the user asks the agent to create, draw, build, or generate Figma wireframes for landing pages from supplied text structure, headings, sections, page copy, or related page outlines, including requests to match an existing landing page style or make a page consistent with a reference page. Trigger for landing wireframes only, including main landing pages, policy pages, pricing/detail pages, thank-you pages, and other landing-adjacent pages; do not use for mobile screens, dashboards, web apps, diagrams, or pixel-perfect visual design.
 ---
 
 # Figma Wireframes Generator
@@ -16,6 +16,7 @@ Create strict desktop landing-page wireframes in Figma from user-supplied text. 
 - Do not call `generate_diagram`, `generate_deck`, or `generate_figma_design` for this skill.
 - Work in the open or user-provided Figma file. Do not create a new Figma file unless the user explicitly asks for one.
 - For Figma API implementation patterns, read `references/figma-wireframe-api.md` only when preparing JavaScript for the Figma MCP write tool.
+- If the user asks to make a page "in the style of", "like", "consistent with", "as the main page", or "based on" an existing page, treat that page as a strict visual reference. Measure its visual values before generating; do not use it as loose inspiration.
 
 ## Runtime Support
 
@@ -98,6 +99,7 @@ Always create desktop wireframes only.
 - Normalize generated sizes after building components and pages so auto-layout frames do not collapse to height `1`.
 - Never generate fractional numeric layout values. Round all computed positions, sizes, gaps, padding, and typography values to whole pixels before applying them in Figma.
 - Keep UI language consistent. Do not randomly mix Russian and English labels; preserve product terms when appropriate.
+- When matching an existing reference page, copy visual values literally by role and pattern: colors, strokes, radii, spacing, typography, buttons, cards, forms, placeholders, header, and footer.
 - Use restrained layer names: clear enough for a designer, not obsessively detailed.
 - Use gray-scale fills and strokes only unless the user explicitly asks for visual styling.
 - Do not create final UI polish, brand styling, illustrations, photos, or decorative visual design.
@@ -120,16 +122,18 @@ Header, footer, and button components may use simple gray containers, text, and 
 2. Ask exactly 5 clarifying questions as a sequential questionnaire, one question per user turn.
 3. Summarize the planned pages and section order briefly.
 4. Use the available Figma MCP write tool: `use_figma` in Codex/OpenAI after loading `figma:figma-use`, or the configured equivalent in Claude Code.
-5. Create or update the wireframes in the current Figma file.
-6. Create desktop variables, grid style, and the component set.
-7. Build each page as a 1280 px wide auto-layout frame with the grid applied.
-8. Build repeated card groups as fresh `layoutMode = "GRID"` containers when the column structure is predictable.
-9. Insert header, footer, and button instances instead of detached copies.
-10. Use the supplied text exactly unless the user asked for copy expansion.
-11. Run a final sizing pass: fit standalone components first, then page sections, then root page frames.
-12. Run a Figma-side validation for section widths, grid row counts, overflow, text sizing, and detached header/footer/button structures.
-13. Run a final text audit for mixed-language UI labels.
-14. For visual QA, use Figma MCP `get_screenshot`. If shell networking is restricted, do not require `curl`; request an inline/base64 screenshot when visual inspection is needed, or combine the MCP screenshot metadata with Figma-side structural checks.
+5. If a reference page is requested, inspect it first, extract a style inventory, and create a content-role to reference-style role map.
+6. Create or update the wireframes in the current Figma file.
+7. Create desktop variables, grid style, and the component set.
+8. Build each page as a 1280 px wide auto-layout frame with the grid applied.
+9. Build repeated card groups as fresh `layoutMode = "GRID"` containers when the column structure is predictable.
+10. Insert header, footer, and button instances instead of detached copies.
+11. Use the supplied text exactly unless the user asked for copy expansion.
+12. Run a final sizing pass: fit standalone components first, then page sections, then root page frames.
+13. Run a Figma-side validation for section widths, grid row counts, overflow, text sizing, and detached header/footer/button structures.
+14. Run a final text audit for mixed-language UI labels.
+15. If matching a reference page, run a visual parity check against the reference before answering.
+16. For visual QA, use Figma MCP `get_screenshot`. If shell networking is restricted, do not require `curl`; request an inline/base64 screenshot when visual inspection is needed, or combine the MCP screenshot metadata with Figma-side structural checks.
 
 ## UX Guidance
 
