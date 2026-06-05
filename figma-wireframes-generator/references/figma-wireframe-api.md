@@ -243,6 +243,8 @@ function preventRussianDanglingWords(text) {
 
 Do not rewrite wording just to fix typography. Only join short words to the following word.
 
+Do not force typographic fixes with manual line breaks. Use non-breaking spaces for dangling short words and let container width determine wrapping.
+
 ## Auto Layout
 
 Use Figma Plugin API axis alignment values, not CSS names:
@@ -338,6 +340,7 @@ All text must fit inside its parent container:
 
 - Do not leave text nodes with `height = 1`.
 - Do not use fixed text height unless there is a specific reason.
+- Do not insert manual `\n` line breaks into supplied text for visual composition. Preserve line breaks already present in the user's source text.
 - Use `textAutoResize = "HEIGHT"` for text that must wrap inside a card, section, row, table cell, FAQ row, or content column.
 - Use `textAutoResize = "WIDTH_AND_HEIGHT"` only for short labels that may define their own width, such as nav items, language switchers, compact button labels, and small pills.
 - For card titles, descriptions, FAQ questions, table rows, section body copy, and any long text, set the text width to the available inner width of the parent, then use `textAutoResize = "HEIGHT"`.
