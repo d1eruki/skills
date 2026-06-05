@@ -458,6 +458,36 @@ for (const pageFrame of generatedPageFrames) {
 
 Create text using supplied copy only. Text must hug height but be constrained to the parent content width.
 
+## Typographic Hierarchy
+
+Assign text sizes by semantic role, not by arbitrary section-by-section styling.
+
+Default hierarchy:
+
+- Hero `H1` is usually the largest text on the page.
+- `H2` must be smaller than `H1`.
+- `H3` must be smaller than `H2`.
+- `H4` must be smaller than `H3`.
+- `H5` must be smaller than `H4`.
+- Body paragraph text must not be smaller than `16px`.
+- Caption text must be `12-14px`.
+
+Do not let a lower-level heading visually outrank a higher-level heading. For example:
+
+- card title must not be larger than a section heading
+- body copy must not be `12px` unless it is explicitly a caption or legal microcopy
+- captions must not be styled like body text
+
+When matching a reference page, copy typography values by role from the reference, but preserve the hierarchy: `H1 > H2 > H3 > H4 > H5 > p > caption`. If the reference contains a local exception, keep it only when the same semantic role exists in the new page.
+
+Validation:
+
+- collect generated text nodes by role
+- verify heading sizes decrease by semantic level
+- verify body paragraph text is at least `16px`
+- verify captions are between `12px` and `14px`
+- verify CTA, button, and nav labels are treated as UI labels, not headings
+
 All text must fit inside its parent container:
 
 - Do not leave text nodes with `height = 1`.

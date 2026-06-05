@@ -95,6 +95,7 @@ Always create desktop wireframes only.
 - Use auto layout for frames, sections, component internals, and repeated structures.
 - Use real Figma Auto Layout grids for repeated card groups with predictable columns. Recreate grid containers from scratch when changing row or column structure.
 - Set text to hug height while constraining width to the parent content area. Do not make long text hug width, because it can expand cards and break the grid.
+- Preserve typographic hierarchy by role: hero `H1` is usually largest, then `H2`, `H3`, `H4`, `H5` decrease by level; body text must not be smaller than `16px`, and captions must be `12-14px`.
 - Do not wrap individual text nodes in meaningless one-text frames. Let the parent auto-layout container handle spacing and alignment.
 - Normalize generated sizes after building components and pages so auto-layout frames do not collapse to height `1`.
 - Never generate fractional numeric layout values. Round all computed positions, sizes, gaps, padding, and typography values to whole pixels before applying them in Figma.
