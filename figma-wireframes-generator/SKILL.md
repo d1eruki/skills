@@ -106,6 +106,7 @@ Mode priorities:
 - Never generate fractional numeric layout values. Round all computed positions, sizes, gaps, padding, and typography values to whole pixels before applying them in Figma.
 - Keep UI language consistent. Do not randomly mix Russian and English labels; preserve product terms when appropriate.
 - When matching an existing reference page, copy visual values literally by role and pattern: colors, strokes, radii, spacing, typography, buttons, cards, forms, placeholders, header, and footer.
+- In reference mode, reuse matching full-section patterns from the reference/main page for common blocks such as FAQ, contact forms, final CTA sections, and repeated conversion blocks instead of rebuilding them from scratch.
 - Even in reference mode, round fractional reference values before generating. If fractional values are found in the reference, mention them in the final message when practical so the user can fix the source file.
 - Use restrained layer names: clear enough for a designer, not obsessively detailed.
 - Use gray-scale fills and strokes only in new-wireframe mode unless the user explicitly asks for visual styling. In reference or update mode, follow the reference/existing page styles instead.

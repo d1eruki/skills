@@ -65,7 +65,12 @@ Choose matching patterns:
 - process steps should use process-step parameters from the reference when available
 - final CTA should use the final CTA pattern from the reference when available
 - form fields should use the closest input/form pattern from the reference when available
+- FAQ sections should use the FAQ structure and visual pattern from the reference/main page when available
+- contact forms should use the form section structure, field styles, button instance, spacing, and visual pattern from the reference/main page when available
+- repeated CTA/conversion blocks should be copied from the reference/main page pattern when available
 - if no exact pattern exists, use the nearest low-fidelity surface style while preserving measured card/text parameters
+
+When a target page contains a common block that also exists on the reference/main page, compare both pages' content roles and use the reference/main page block as the source of truth for structure and visual treatment. At minimum, FAQ and contact form sections must be copied or recreated from the main/reference page pattern when present.
 
 When preserving source content, do not add semantic blocks, stats, benefits, CTA labels, labels, captions, decorative text, or placeholder copy that were not supplied by the user or present in the source page.
 
@@ -79,6 +84,7 @@ Structural validation is not enough. Run a visual parity check against the refer
 - section spacing rhythm matches
 - buttons match
 - header/footer are reused or visually identical
+- FAQ, contact form, and repeated CTA blocks match the reference/main page pattern when those patterns exist
 - the new page does not look like a separate design system
 
 Use screenshots for the reference page and the generated page when possible. Inspect the first screen, card sections, form section, FAQ, final CTA, and footer. If the new page differs in visual language, fix it before answering.
