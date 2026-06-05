@@ -290,6 +290,67 @@ Validation:
 - no section may exceed `1280`
 - section children should sit inside the 60 px side padding
 
+## Auto Layout Width Discipline
+
+In auto-layout containers, do not treat visual width and content width as the same thing.
+
+For every child inside a padded parent:
+
+```js
+const contentWidth = parent.width - (parent.paddingLeft || 0) - (parent.paddingRight || 0);
+```
+
+All text, rows, fields, cards, and form controls must be constrained to the parent content width, not the parent frame width.
+
+For content text nodes inside auto-layout parents:
+
+- set `textAutoResize = "HEIGHT"`
+- set `layoutSizingHorizontal = "FILL"` whenever the text should occupy the available content width
+- set `layoutSizingVertical = "HUG"`
+- do not leave content text as fixed-width auto-layout children unless it is a compact label, badge, chip, icon label, nav item, language switcher, or button label
+
+Do not use `resize(width, height)` as the final layout model for content text. You may resize once to establish wrapping, but the final state must use auto-layout sizing where applicable.
+
+Validation:
+
+- content text in auto-layout containers uses `layoutSizingHorizontal === "FILL"`
+- content text uses `textAutoResize === "HEIGHT"`
+- content text uses `layoutSizingVertical === "HUG"` when supported
+- fixed-width text is limited to compact labels, badges, chips, icon labels, nav items, language switchers, and button labels
+
+## Recursive Content Width Rules
+
+When nesting containers, calculate content width at every level.
+
+Example:
+
+- section width `1280`
+- section padding `60 + 60`
+- section content width `1160`
+- form width `770`
+- form padding `32 + 32`
+- form content width `706`
+- step width `706`
+- step padding `24 + 24`
+- step content width `658`
+- two-column row gap `20`
+- field width `(658 - 20) / 2 = 319`
+
+Never place a `706`-wide child inside a `706`-wide parent that has `24px` horizontal padding. That child must be `658` or `FILL` within the content area.
+
+For columns inside padded parents:
+
+```js
+const contentWidth = parent.width - (parent.paddingLeft || 0) - (parent.paddingRight || 0);
+const columnWidth = Math.floor((contentWidth - gap * (columns - 1)) / columns);
+```
+
+Validation:
+
+- no child exceeds its parent content width
+- rows, fields, cards, forms, and form controls are sized from recursive content width
+- children align inside the padded content area, not against the outer parent frame edge
+
 ## Integer Values Only
 
 Never generate fractional numeric values in Figma wireframes.
@@ -437,12 +498,25 @@ Auto-layout roots can collapse after generation, especially with large page fram
 
 1. Fit standalone components.
 2. Fit component instances if their parent layout needs explicit dimensions.
-3. Fit page sections from deepest children upward.
-4. Fit the root page frame last.
+3. Fit page sections from deepest children upward without expanding fixed-width containers.
+4. Fit the root page frame last while preserving width `1280`.
+
+Before sizing, identify fixed-width containers that must not expand:
+
+- page frame: fixed `1280`
+- section: fixed `1280`
+- section content: fixed `1160`
+- form: fixed measured width, such as `770`
+- step/content blocks: fill parent content width, not expand parent
+- grid containers and cards: fixed from their computed column/content widths
 
 Use a helper like this and adapt dimensions to the actual layout:
 
 ```js
+function isFixedWidthContainer(node) {
+  return /Page|Section|Content|Form|Step|Grid|Card/i.test(node.name || "");
+}
+
 function fitGeneratedWireframe(node) {
   if (!("children" in node)) return;
   for (const child of node.children) fitGeneratedWireframe(child);
@@ -468,10 +542,14 @@ function fitGeneratedWireframe(node) {
       node.height,
       ...children.map(child => child.height + (node.paddingTop || 0) + (node.paddingBottom || 0))
     );
-    if (width > 1 && height > 1 && "resize" in node) node.resize(width, height);
+    if (height > 1 && "resize" in node) {
+      node.resize(isFixedWidthContainer(node) ? node.width : width, height);
+    }
   }
 }
 ```
+
+Do not use a generic fit pass that expands fixed-width containers upward through the tree. If children overflow, fix the children sizing or recursive content-width calculation instead of widening the parent.
 
 Run this before final QA:
 
@@ -526,11 +604,11 @@ All text must fit inside its parent container:
 - Do not insert manual `\n` line breaks into supplied text for visual composition. Preserve line breaks already present in the user's source text.
 - Use `textAutoResize = "HEIGHT"` for text that must wrap inside a card, section, row, table cell, FAQ row, or content column.
 - Use `textAutoResize = "WIDTH_AND_HEIGHT"` only for short labels that may define their own width, such as nav items, language switchers, compact button labels, and small pills.
-- For card titles, descriptions, FAQ questions, table rows, section body copy, and any long text, set the text width to the available inner width of the parent, then use `textAutoResize = "HEIGHT"`.
+- For card titles, descriptions, FAQ questions, table rows, section body copy, and any long text, set wrapping from the available inner width of the parent, then end with `textAutoResize = "HEIGHT"` and `layoutSizingHorizontal = "FILL"` when inside auto layout.
 - Available width is `parent.width - parent.paddingLeft - parent.paddingRight`.
 - Text should never be wider than the parent's inner content area.
 
-Use this helper for long or wrapping text:
+Use this helper for long or wrapping text inside auto-layout parents:
 
 ```js
 function fitTextToParent(textNode) {
@@ -541,10 +619,11 @@ function fitTextToParent(textNode) {
       : textNode.width;
 
   textNode.textAutoResize = "HEIGHT";
+  // Temporary resize establishes wrapping width; final auto-layout sizing is FILL/HUG.
   textNode.resize(Math.max(40, innerWidth), Math.max(1, textNode.height));
 
   if ("layoutSizingHorizontal" in textNode) {
-    textNode.layoutSizingHorizontal = "FIXED";
+    textNode.layoutSizingHorizontal = "FILL";
   }
 
   if ("layoutSizingVertical" in textNode) {
@@ -552,6 +631,8 @@ function fitTextToParent(textNode) {
   }
 }
 ```
+
+Do not leave content text as `layoutSizingHorizontal = "FIXED"` after generation unless it is a compact label, badge, chip, icon label, nav item, language switcher, or button label.
 
 For short labels only:
 
@@ -631,6 +712,27 @@ Create components before pages:
 
 Use `component.createInstance()` for every page occurrence. Do not detach instances.
 
+## Button Component Enforcement
+
+Every button-like element must be a component instance.
+
+This includes:
+
+- hero CTAs
+- final CTAs
+- form submit buttons
+- modal buttons
+- secondary buttons
+- text buttons if they are visually styled as buttons
+
+After generation, validate all button-like nodes recursively:
+
+- names containing `Button`, `Link`, `CTA`, `Submit`
+- frames with button-like padding and fills
+- text labels that represent actions
+
+If any button-like element is a raw `FRAME`, convert it to a component or replace it with an instance of the Button component.
+
 In new-wireframe mode, use simple gray fills:
 
 - page background `#FFFFFF`
@@ -648,16 +750,21 @@ Before ending the `use_figma` script, inspect generated page frames:
 - each page has layout grids
 - each page uses vertical auto layout
 - header/footer/button occurrences are instances
+- every button-like element at every nesting level is an instance, including form submit buttons and modal buttons
 - page width is 1280
 - sections are width `1280`, direct content frames and grids are no wider than `1160`, and children sit inside 60 px side padding
+- no child exceeds its recursive parent content width
 - intended card groups use `layoutMode === "GRID"` and expected row counts match actual child positions
 - no child overflows its parent
+- content text inside auto-layout containers uses `layoutSizingHorizontal = "FILL"` unless it is a compact label, badge, chip, nav item, language switcher, or button label
+- content text uses `textAutoResize = "HEIGHT"` and vertical hug sizing where supported
 - no generated node has fractional `x`, `y`, `width`, `height`, spacing, padding, grid gap, text width, font size, or line height
 - no obvious text node has empty generated filler such as lorem ipsum
 - no text node has `textAutoResize = "NONE"`
 - no non-instance text node has `height <= 2`
 - no text node is wider than `parent.width - parent horizontal padding`
 - no text inside a card overflows below the card
+- no generic sizing pass expanded fixed containers such as page frames, sections, section content frames, forms, steps, grids, or cards beyond their intended widths
 - typographic hierarchy is valid by role
 - body paragraph text is at least `16px`
 - captions are `12-14px`

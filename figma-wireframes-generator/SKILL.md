@@ -97,8 +97,9 @@ Mode priorities:
 - Constrain main section content to the `breakpoint` variable.
 - Every page section must be width `1280`, with horizontal padding `60`, inner content width `1160`, and auto height based on content.
 - Use auto layout for frames, sections, component internals, and repeated structures.
+- Calculate content width recursively at every nesting level as `parent.width - parent.paddingLeft - parent.paddingRight`; constrain children to the parent content area, not the parent frame width.
 - Use real Figma Auto Layout grids for repeated card groups with predictable columns. Recreate grid containers from scratch when changing row or column structure.
-- Set text to hug height while constraining width to the parent content area. Do not make long text hug width, because it can expand cards and break the grid.
+- In auto-layout containers, content text should use `layoutSizingHorizontal = "FILL"`, `textAutoResize = "HEIGHT"`, and `layoutSizingVertical = "HUG"` instead of ending as manually fixed-width text.
 - Preserve typographic hierarchy by role: hero `H1` is usually largest, then `H2`, `H3`, `H4`, `H5` decrease by level; body text must not be smaller than `16px`, and captions must be `12-14px`.
 - Do not wrap individual text nodes in meaningless one-text frames. Let the parent auto-layout container handle spacing and alignment.
 - Normalize generated sizes after building components and pages so auto-layout frames do not collapse to height `1`.
@@ -118,7 +119,7 @@ Create reusable components beside the page frames before composing pages:
 - Footer component
 - Button component, with variants only if the supplied structure requires distinct button types
 
-Use instances of those components in every landing page and supporting page. Do not leave non-component headers, footers, or buttons inside the wireframe pages.
+Use instances of those components in every landing page and supporting page. Do not leave non-component headers, footers, or buttons inside the wireframe pages. This applies recursively to every button-like element, including form submit buttons, modal buttons, secondary buttons, and styled text buttons.
 
 In new-wireframe mode, header, footer, and button components may use simple gray containers, text, and spacing. In reference or update mode, reuse existing components or recreate their measured visual style instead of creating new simple gray components.
 
@@ -136,7 +137,7 @@ In new-wireframe mode, header, footer, and button components may use simple gray
 10. Insert header, footer, and button instances instead of detached copies.
 11. Use the supplied text exactly unless the user asked for copy expansion.
 12. Run a final sizing pass: fit standalone components first, then page sections, then root page frames.
-13. Run a Figma-side validation for section widths, grid row counts, overflow, text sizing, and detached header/footer/button structures.
+13. Run a Figma-side validation for section widths, recursive content widths, layout sizing modes, grid row counts, overflow, text sizing, and detached header/footer/button structures.
 14. Run a final text audit for mixed-language UI labels.
 15. If matching a reference page, run a visual parity check against the reference before answering.
 16. For visual QA, use Figma MCP `get_screenshot`. If shell networking is restricted, do not require `curl`; request an inline/base64 screenshot when visual inspection is needed, or combine the MCP screenshot metadata with Figma-side structural checks.
