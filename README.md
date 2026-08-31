@@ -8,14 +8,17 @@ Skills помогают агентам работать предсказуемо
 
 ## Skills
 
-| Skill | Описание |
-| --- | --- |
-| [`design-macos-apps`](./design-macos-apps/SKILL.md) | Проектирует, реализует и проверяет нативные интерфейсы macOS по Apple Human Interface Guidelines. |
-| [`figma-design-system-refactor`](./figma-design-system-refactor/SKILL.md) | Аудирует, рефакторит и внедряет дизайн-системы в существующих Figma-файлах. |
-| [`figma-wireframes-generator`](./figma-wireframes-generator/SKILL.md) | Генерирует desktop low-fidelity wireframes для landing pages и связанных страниц в текущем Figma-файле. |
-| [`frontend-engineering`](./frontend-engineering/SKILL.md) | Применяет устойчивые подходы к реализации и диагностике frontend-интерфейсов, включая Vue, Tailwind, темы и accessibility. |
-| [`frontend-maintenance`](./frontend-maintenance/SKILL.md) | Аудирует и безопасно обновляет runtime, зависимости и frontend-tooling как совместимую систему. |
-| [`frontend-verification`](./frontend-verification/SKILL.md) | Проектирует долговечные frontend-тесты и выбирает пропорциональную проверку изменений. |
+| Skill                                                                     | Описание                                                                                                               |
+| ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| [`design-macos-apps`](./design-macos-apps/SKILL.md)                       | Проектирует, реализует и проверяет нативные интерфейсы macOS по Apple Human Interface Guidelines.                      |
+| [`figma-design-system-refactor`](./figma-design-system-refactor/SKILL.md) | Аудирует, рефакторит и внедряет дизайн-системы в существующих Figma-файлах.                                            |
+| [`figma-wireframes-generator`](./figma-wireframes-generator/SKILL.md)     | Генерирует desktop low-fidelity wireframes для landing pages и связанных страниц в текущем Figma-файле.                |
+| [`frontend-engineering`](./frontend-engineering/SKILL.md)                 | Применяет общие подходы к реализации и диагностике frontend-интерфейсов и подключает доступные технологические skills. |
+| [`frontend-maintenance`](./frontend-maintenance/SKILL.md)                 | Аудирует и безопасно обновляет runtime, зависимости и frontend-tooling как совместимую систему.                        |
+| [`frontend-verification`](./frontend-verification/SKILL.md)               | Проектирует долговечные frontend-тесты и выбирает пропорциональную проверку изменений.                                 |
+| [`repository-workflow`](./repository-workflow/SKILL.md)                   | Задаёт проверку репозитория, согласование scope, краткую коммуникацию и поддержку инструкций.                          |
+| [`tailwind-engineering`](./tailwind-engineering/SKILL.md)                 | Реализует и диагностирует Tailwind CSS через utilities, tokens, variants и обоснованные расширения.                    |
+| [`vue-engineering`](./vue-engineering/SKILL.md)                           | Реализует и диагностирует Vue-компоненты, реактивность, composables и владение состоянием.                             |
 
 ## Формат Skill
 

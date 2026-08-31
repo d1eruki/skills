@@ -1,9 +1,18 @@
 ---
 name: frontend-engineering
-description: Implement, review, or diagnose frontend application work involving components, CSS, Tailwind, themes, color tokens, responsive layouts, accessibility, effects, or localization. Use existing project conventions when they are available.
+description: Implement, review, or diagnose framework-agnostic frontend application work involving components, CSS, themes, color tokens, responsive layouts, accessibility, effects, or localization. Use existing project conventions and available technology-specific skills when applicable.
 ---
 
 # Frontend Engineering
+
+## Load Technology-Specific Guidance
+
+Detect the active framework and styling tools from manifests, configuration, and source files before making technology-specific decisions.
+
+- When the project uses Vue and `$vue-engineering` is available, load it for Vue implementation, review, or diagnosis.
+- When the project uses Tailwind CSS and `$tailwind-engineering` is available, load it for Tailwind implementation, review, or diagnosis.
+
+If a matching skill is unavailable, continue from the installed version, official documentation, and established project conventions rather than assuming another tool's behavior.
 
 ## Diagnose Active Runtime Behavior
 
@@ -24,7 +33,19 @@ Before styling or structuring a component, inspect nearby components that solve 
 
 Prefer extending or composing an established pattern over introducing component-specific CSS, arbitrary values, or a parallel mechanism. Keep a one-off element in its nearest semantic parent unless extraction creates a meaningful reusable or independently owned component.
 
-Before creating state flow, persistence, routing, data loading, or another shared mechanic, search for an equivalent helper, composable, store, or established lifecycle and reuse or extend it when its contract fits.
+Before creating state flow, persistence, routing, data loading, or another shared mechanic, search for an equivalent helper, state module, service, or established lifecycle and reuse or extend it when its contract fits.
+
+Identify the smallest existing property or mechanism that directly controls the requested result and change that first. Expand the structure, state, or implementation scope only after confirming that the smaller adjustment cannot satisfy the requirement.
+
+Do not duplicate state synchronization, persistence, routing, data loading, or other shared behavior when an existing mechanism can own the same contract and lifecycle. Reuse or extract equivalent multi-line logic, but do not introduce an abstraction solely to eliminate intentionally similar declarative markup or data.
+
+## Manage Cross-Cutting Changes
+
+When replacing a shared mechanism or changing coupled behavior, first confirm that a direct local adjustment is insufficient. Then map only the affected path before proposing edits: current baseline, target contract, responsible mechanism, inputs and lifecycle, consumers and interactions, invariants, relevant states or environments, and observable acceptance checks.
+
+Give each behavior one responsible mechanism. Do not let old and new implementations control the same outcome simultaneously unless an explicitly approved migration requires it. Keep connected changes atomic when splitting them would create an invalid intermediate state.
+
+If the same acceptance check remains broken after two local fixes, or a fix regresses another mapped behavior, stop symptom-level patching and return to read-only diagnosis. Update the behavior map before changing the responsible mechanism, files, or scope.
 
 ## Derive Responsive Layouts
 
@@ -50,11 +71,9 @@ Calculate an inner radius as `max(0, outer radius - distance between contours)`.
 
 ## Prefer Framework and Library Primitives
 
-Use a framework's documented APIs and established project patterns before custom workarounds. For Tailwind projects, prefer built-in utilities, theme tokens, CSS variables, and variants over custom CSS or hardcoded values.
+Use a framework's documented APIs and established project patterns before custom workarounds.
 
-Use canonical utilities when the framework covers the requirement. Avoid complex arbitrary calculations when normal sizing, padding, flex, or grid can resolve the layout. Add custom utilities or theme tokens only when built-in behavior is insufficient or the value is a deliberate project token.
-
-Implement layout, spacing, sizing, colors, typography, responsive behavior, borders, and shadows in component templates with utilities by default when that is the project's established approach.
+Reimplement or bypass baseline library behavior only when it is insufficient for the requirement and explain the concrete limitation before introducing the workaround.
 
 ## Maintain Layered Color Systems
 
@@ -74,9 +93,7 @@ Keep dependencies layered:
 - Consume established component tokens instead of bypassing them with lower-level values.
 - Keep reusable component states inside the component; expose a prop or variant when a parent must select them.
 
-Use one vocabulary across the chain. Paired colors should describe a surface and its content. Reserve `muted` for enabled low-priority content and `disabled` for unavailable controls or content. Do not use raw palette utilities in application code when the project has an established semantic token layer.
-
-Prefer utilities and existing tokens over component-specific selectors. When custom CSS is necessary, identify the missing framework capability and keep the exception local.
+Use one vocabulary across the chain. Paired colors should describe a surface and its content. Reserve `muted` for enabled low-priority content and `disabled` for unavailable controls or content. Do not bypass an established semantic token layer with raw palette values in application code.
 
 ## Preserve Accessibility and Localization
 

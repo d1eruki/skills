@@ -25,6 +25,8 @@ Exercise behavior through real interactions and observable outcomes. Trigger hov
 
 Batch related edits and run the relevant verification set after the implementation batch instead of repeatedly rerunning the same checks after individual edits.
 
+Keep production behavior, diagnostics, and tests distinct. Diagnostics and test scaffolding must not change product behavior, conceal a regression, or substitute for a product fix; remove temporary instrumentation before handoff.
+
 For visual UI work:
 
 1. Complete the scoped implementation.
@@ -36,3 +38,5 @@ For visual UI work:
 For non-visual changes, skip visual review and run only relevant checks. Run a production build when build configuration, dependencies, asset processing, or production-only behavior is affected, or at the end of a larger integration batch.
 
 Report unrelated or pre-existing failures separately and do not describe a suite as passing when relevant checks failed or were skipped.
+
+Treat a batch as complete only when its observable acceptance checks, required visual review, and relevant automated verification all pass. When a relevant failure requires a file change, repeat the affected review and verification rather than reporting the original batch as complete.

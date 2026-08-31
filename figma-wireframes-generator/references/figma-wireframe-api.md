@@ -94,15 +94,17 @@ Use screenshots for the reference page and the generated page when possible. Ins
 Apply this grid to each 1280 px page frame:
 
 ```js
-frame.layoutGrids = [{
-  pattern: "COLUMNS",
-  visible: true,
-  color: { r: 0.2, g: 0.2, b: 0.2, a: 0.12 },
-  alignment: "STRETCH",
-  gutterSize: 20,
-  offset: 60,
-  count: 12
-}];
+frame.layoutGrids = [
+  {
+    pattern: "COLUMNS",
+    visible: true,
+    color: { r: 0.2, g: 0.2, b: 0.2, a: 0.12 },
+    alignment: "STRETCH",
+    gutterSize: 20,
+    offset: 60,
+    count: 12,
+  },
+];
 ```
 
 Create a grid style named `Wireframe / Desktop 12 Columns` and assign it to frames when possible. If style creation is unsupported in the current context, apply the grid object directly to each frame.
@@ -203,8 +205,8 @@ For a `4 x 2` transfer layout:
   { row: 0, col: 2, span: 1 },
   { row: 0, col: 3, span: 1 },
   { row: 1, col: 0, span: 2 },
-  { row: 1, col: 2, span: 2 }
-]
+  { row: 1, col: 2, span: 2 },
+];
 ```
 
 ### Height Rule
@@ -212,9 +214,7 @@ For a `4 x 2` transfer layout:
 Never trust nominal row count for height. After children are placed:
 
 ```js
-const maxBottom = Math.max(
-  ...grid.children.map(child => child.y + child.height)
-);
+const maxBottom = Math.max(...grid.children.map((child) => child.y + child.height));
 
 grid.resize(1160, Math.ceil(maxBottom) + 24);
 ```
@@ -237,14 +237,14 @@ Expected rows map for common landing sections:
 ```js
 const expectedRowsBySection = {
   "Benefits grid": 1,
-  "Steps": 1,
+  Steps: 1,
   "Use cases grid": 2,
   "Selection parameters": 1,
   "Transfers grid": 2,
   "Premium benefits": 1,
   "Security grid": 2,
   "Audience grid": 2,
-  "Blog cards": 1
+  "Blog cards": 1,
 };
 ```
 
@@ -347,7 +347,7 @@ Apply only whole-number values for:
 Round every computed value before using `resize`, assigning positions, setting spacing, or applying typography:
 
 ```js
-const px = value => Math.round(value);
+const px = (value) => Math.round(value);
 
 node.x = px(node.x);
 node.y = px(node.y);
@@ -363,10 +363,8 @@ For grid calculations, distribute any remainder intentionally so total width rem
 function integerColumns(containerWidth, gap, columns) {
   const totalGap = gap * (columns - 1);
   const base = Math.floor((containerWidth - totalGap) / columns);
-  const remainder = (containerWidth - totalGap) - base * columns;
-  return Array.from({ length: columns }, (_, index) =>
-    base + (index < remainder ? 1 : 0)
-  );
+  const remainder = containerWidth - totalGap - base * columns;
+  return Array.from({ length: columns }, (_, index) => base + (index < remainder ? 1 : 0));
 }
 ```
 
@@ -406,7 +404,10 @@ Use non-breaking spaces when preserving the user's exact text does not forbid ty
 
 ```js
 function preventRussianDanglingWords(text) {
-  return text.replace(/\b(в|во|на|с|со|к|ко|у|о|об|от|до|за|из|по|для|при|и|а|но|не)\s+/gi, "$1\u00A0");
+  return text.replace(
+    /\b(в|во|на|с|со|к|ко|у|о|об|от|до|за|из|по|для|при|и|а|но|не)\s+/gi,
+    "$1\u00A0",
+  );
 }
 ```
 
@@ -500,9 +501,10 @@ function fitGeneratedWireframe(node) {
     const children = node.children || [];
     const spacing = node.itemSpacing || 0;
     const paddingY = (node.paddingTop || 0) + (node.paddingBottom || 0);
-    const height = children.reduce((sum, child) => sum + child.height, 0)
-      + Math.max(0, children.length - 1) * spacing
-      + paddingY;
+    const height =
+      children.reduce((sum, child) => sum + child.height, 0) +
+      Math.max(0, children.length - 1) * spacing +
+      paddingY;
     if (height > 1 && "resize" in node) node.resize(node.width, height);
   }
 
@@ -510,12 +512,13 @@ function fitGeneratedWireframe(node) {
     const children = node.children || [];
     const spacing = node.itemSpacing || 0;
     const paddingX = (node.paddingLeft || 0) + (node.paddingRight || 0);
-    const width = children.reduce((sum, child) => sum + child.width, 0)
-      + Math.max(0, children.length - 1) * spacing
-      + paddingX;
+    const width =
+      children.reduce((sum, child) => sum + child.width, 0) +
+      Math.max(0, children.length - 1) * spacing +
+      paddingX;
     const height = Math.max(
       node.height,
-      ...children.map(child => child.height + (node.paddingTop || 0) + (node.paddingBottom || 0))
+      ...children.map((child) => child.height + (node.paddingTop || 0) + (node.paddingBottom || 0)),
     );
     if (height > 1 && "resize" in node) {
       node.resize(isFixedWidthContainer(node) ? node.width : width, height);

@@ -34,6 +34,8 @@ Use current primary sources because versions and compatibility policies change.
 
 For project-wide audits, account for every direct dependency. Map each package to confirmed imports, configuration, scripts, tests, documentation, or generated assets. Classify each as `keep`, `update`, `replace`, `remove`, or `defer`, and separate confirmed evidence from hypotheses.
 
+Report totals for direct dependencies reviewed, confirmed consumers, unused candidates, compatible updates, major-version migrations, abandoned packages, maintenance risks, deprecated direct packages, and deprecated transitive packages found in the inspected paths. State explicitly when security advisory checking was not performed or could not be completed.
+
 ## Evaluate Custom Mechanisms
 
 1. Map the mechanism's contract, lifecycle, consumers, edge cases, fallbacks, tests, and production constraints.
