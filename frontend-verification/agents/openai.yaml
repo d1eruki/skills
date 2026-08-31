@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Verification"
+  short_description: "Design durable tests and validate frontend changes"
+  default_prompt: "Use $frontend-verification to plan or validate this frontend change with proportional behavioral checks."

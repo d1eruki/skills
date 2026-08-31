@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Engineering"
+  short_description: "Implement and diagnose maintainable frontend interfaces"
+  default_prompt: "Use $frontend-engineering to implement, review, or diagnose this frontend change using the project's existing patterns."

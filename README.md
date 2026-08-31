@@ -10,7 +10,12 @@ Skills помогают агентам работать предсказуемо
 
 | Skill | Описание |
 | --- | --- |
-| [`figma-wireframes-generator`](./figma-wireframes-generator/SKILL.md) | Генерирует desktop low-fidelity wireframes для landing pages и связанных страниц в текущем Figma-файле. Использует реальные тексты пользователя, строгую 1280 px сетку, auto layout, reusable header/footer/button components и Figma MCP write tool. |
+| [`design-macos-apps`](./design-macos-apps/SKILL.md) | Проектирует, реализует и проверяет нативные интерфейсы macOS по Apple Human Interface Guidelines. |
+| [`figma-design-system-refactor`](./figma-design-system-refactor/SKILL.md) | Аудирует, рефакторит и внедряет дизайн-системы в существующих Figma-файлах. |
+| [`figma-wireframes-generator`](./figma-wireframes-generator/SKILL.md) | Генерирует desktop low-fidelity wireframes для landing pages и связанных страниц в текущем Figma-файле. |
+| [`frontend-engineering`](./frontend-engineering/SKILL.md) | Применяет устойчивые подходы к реализации и диагностике frontend-интерфейсов, включая Vue, Tailwind, темы и accessibility. |
+| [`frontend-maintenance`](./frontend-maintenance/SKILL.md) | Аудирует и безопасно обновляет runtime, зависимости и frontend-tooling как совместимую систему. |
+| [`frontend-verification`](./frontend-verification/SKILL.md) | Проектирует долговечные frontend-тесты и выбирает пропорциональную проверку изменений. |
 
 ## Формат Skill
 
