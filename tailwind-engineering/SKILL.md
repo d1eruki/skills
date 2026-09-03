@@ -15,6 +15,8 @@ Prefer built-in utilities, project theme tokens, CSS variables, and variants ove
 
 Implement layout, spacing, sizing, colors, typography, responsive behavior, borders, and shadows with utilities in templates when that is the established project approach. Use normal sizing, padding, flex, and grid before introducing complex arbitrary calculations.
 
+Prefer whole numeric values in authored utilities and theme tokens. Avoid fractional values when whole values can express the intended design without meaningful loss. When a fractional value is genuinely necessary, use no more than one digit after the decimal point.
+
 When the project has a semantic color-token layer, consume its established utilities instead of raw palette classes or lower-level values. Keep state styling in the component through supported variants when possible.
 
 ## Keep Classes Discoverable
