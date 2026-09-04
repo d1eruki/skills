@@ -19,6 +19,14 @@ Prefer whole numeric values in authored utilities and theme tokens. Avoid fracti
 
 When the project has a semantic color-token layer, consume its established utilities instead of raw palette classes or lower-level values. Keep state styling in the component through supported variants when possible.
 
+## Centralize Semantic Typography
+
+When a Tailwind project has a defined typography system, expose its actual semantic roles as theme variables and utilities, such as `--text-h1` with `text-h1` or `--text-body` with `text-body`. Derive the names and number of roles from the design instead of requiring a fixed list.
+
+Use values from the active Tailwind type scale when they match the design. Keep responsive font-size changes in the shared token or theme layer so component markup consumes one semantic class rather than repeating combinations such as `text-*`, `sm:text-*`, and `wide:text-*`.
+
+Once semantic typography utilities exist, use them throughout components instead of direct size utilities. Change a shared size centrally. Do not create a new token or shrink text merely to compensate for an incorrect grid, container width, spacing, or wrapping behavior.
+
 ## Keep Classes Discoverable
 
 Use complete class names in source or explicit mappings recognized by the project's Tailwind build. Do not construct class fragments dynamically when that prevents the compiler from discovering the resulting utilities; use an established safelist only when explicit mappings are insufficient.

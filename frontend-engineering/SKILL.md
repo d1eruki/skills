@@ -39,6 +39,16 @@ Identify the smallest existing property or mechanism that directly controls the 
 
 Do not duplicate state synchronization, persistence, routing, data loading, or other shared behavior when an existing mechanism can own the same contract and lifecycle. Reuse or extract equivalent multi-line logic, but do not introduce an abstraction solely to eliminate intentionally similar declarative markup or data.
 
+## Build Deliberate Typography Systems
+
+Before assigning font sizes, identify the text roles that actually exist in the design and define one coherent semantic typography system for them. Do not give individual elements one-off sizes when they share the same role.
+
+Use heading roles from H1 through H5 only when the interface needs those hierarchy levels. Heading semantics do not by themselves require either different or identical visual sizes: follow the design when deciding whether two levels share a size.
+
+Define non-heading roles only when they are present, such as body text, lead text, labels, button text, captions, or overlines. Keep the set reasonably small, but do not impose an arbitrary maximum when the design has a justified additional role.
+
+When a semantic typography system exists, make components consume its roles or tokens instead of raw size values. Change shared sizes centrally. If text does not fit, inspect the grid, container width, spacing, and wrapping before changing the font size or adding another typography role.
+
 ## Manage Cross-Cutting Changes
 
 When replacing a shared mechanism or changing coupled behavior, first confirm that a direct local adjustment is insufficient. Then map only the affected path before proposing edits: current baseline, target contract, responsible mechanism, inputs and lifecycle, consumers and interactions, invariants, relevant states or environments, and observable acceptance checks.
