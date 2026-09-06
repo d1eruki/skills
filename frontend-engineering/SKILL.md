@@ -11,6 +11,18 @@ Use this skill when no technology-specific skill alone owns the task or when the
 
 Use a technology-specific skill alongside this one only when the task independently requires both sets of guidance. Do not load another skill solely because this skill is active.
 
+## Reuse Before Inventing
+
+Before introducing or changing any interface element, search the active project for an equivalent or closely related pattern. Inspect components, nearby templates, shared styles, design tokens, icons, assets, and existing interaction states. This check is required for controls, links, cards, navigation, typography, spacing, responsive behavior, animation, hover and focus behavior, and other visible or interactive conventions.
+
+When a suitable pattern exists:
+
+- Reuse the complete relevant pattern, including its markup, dimensions, tokens, iconography, states, transitions, accessibility behavior, and responsive rules.
+- Extend or compose the existing implementation when multiple consumers should share ownership. Do not create a parallel visual or behavioral variant merely for convenience.
+- Adapt only the properties required by the new context, such as contrast, available space, or semantic labeling. Preserve the established interaction contract and explain any material deviation.
+
+Create a new pattern only after the project search shows that no existing implementation satisfies the requirement or that reusing one would break a concrete constraint. Identify that missing capability before designing the replacement. Do not improvise new icons, motion, control behavior, component shapes, or layout conventions while a project equivalent is available.
+
 ## Diagnose Active Runtime Behavior
 
 When observed behavior contradicts the expected code path, confirm the active runtime source instead of relying on static inspection alone. Treat visually similar CSS, browser, and JavaScript effects as separate hypotheses.
@@ -24,11 +36,7 @@ Where practical, verify:
 
 For capability-gated behavior, trace the path from detection through resolved application state and initialization to the final observable result. Keep independent causes separate during diagnosis, while making consumers depend on one resolved state when they require identical behavior. Clearly distinguish confirmed causes from unverified hypotheses.
 
-## Follow Existing Component Patterns
-
-Before styling or structuring a component, inspect nearby components that solve a similar task. Reuse their complete applicable pattern: utilities, typography, spacing, controls, interaction states, theme tokens, and breakpoints.
-
-Prefer extending or composing an established pattern over introducing component-specific CSS, arbitrary values, or a parallel mechanism. Keep a one-off element in its nearest semantic parent unless extraction creates a meaningful reusable or independently owned component.
+## Reuse Existing Application Mechanics
 
 Before creating state flow, persistence, routing, data loading, or another shared mechanic, search for an equivalent helper, state module, service, or established lifecycle and reuse or extend it when its contract fits.
 
