@@ -1,18 +1,15 @@
 ---
 name: frontend-engineering
-description: Implement, review, or diagnose framework-agnostic frontend application work involving components, CSS, themes, color tokens, responsive layouts, accessibility, effects, or localization. Use existing project conventions and available technology-specific skills when applicable.
+description: Plan or diagnose cross-cutting frontend systems whose behavior spans application state, browser runtime behavior, styling, or shared interface conventions. Use for multi-layer incidents and system-wide interface changes; do not use for ordinary framework, Tailwind, or verification work covered by specialized skills.
 ---
 
 # Frontend Engineering
 
-## Load Technology-Specific Guidance
+## Apply Cross-Cutting Scope
 
-Detect the active framework and styling tools from manifests, configuration, and source files before making technology-specific decisions.
+Use this skill when no technology-specific skill alone owns the task or when the requested outcome spans multiple frontend concerns. Keep framework-specific implementation, styling-tool usage, and verification in their specialized skills.
 
-- When the project uses Vue and `$vue-engineering` is available, load it for Vue implementation, review, or diagnosis.
-- When the project uses Tailwind CSS and `$tailwind-engineering` is available, load it for Tailwind implementation, review, or diagnosis.
-
-If a matching skill is unavailable, continue from the installed version, official documentation, and established project conventions rather than assuming another tool's behavior.
+Use a technology-specific skill alongside this one only when the task independently requires both sets of guidance. Do not load another skill solely because this skill is active.
 
 ## Diagnose Active Runtime Behavior
 
