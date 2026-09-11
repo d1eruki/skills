@@ -1,6 +1,6 @@
 ---
 name: frontend-verification
-description: Plan or validate frontend changes and tests using durable behavioral checks, existing test infrastructure, visual review, formatting, and proportional automated verification.
+description: Plan or validate frontend changes and tests using durable behavioral checks, existing test infrastructure, user-led visual review, formatting, and proportional automated verification.
 ---
 
 # Frontend Verification
@@ -30,13 +30,13 @@ Keep production behavior, diagnostics, and tests distinct. Diagnostics and test 
 For visual UI work:
 
 1. Complete the scoped implementation.
-2. Perform or request visual review in the environments and states affected by the change.
-3. Apply visual feedback within scope and repeat review until accepted.
+2. Prepare the affected environments and states for the user to review, and clearly request their visual verification. Do not perform or claim visual approval on the user's behalf.
+3. Apply the user's visual feedback within scope and return the result for another user review until they accept it.
 4. Run the repository's formatter, relevant integrity or unit tests, and relevant browser tests.
-5. If a relevant failure requires a code change, treat verification as incomplete and repeat affected review and checks.
+5. If a relevant failure requires a visually meaningful code change, treat verification as incomplete and return the affected states for another user review after repeating the relevant automated checks.
 
 For non-visual changes, skip visual review and run only relevant checks. Run a production build when build configuration, dependencies, asset processing, or production-only behavior is affected, or at the end of a larger integration batch.
 
 Report unrelated or pre-existing failures separately and do not describe a suite as passing when relevant checks failed or were skipped.
 
-Treat a batch as complete only when its observable acceptance checks, required visual review, and relevant automated verification all pass. When a relevant failure requires a file change, repeat the affected review and verification rather than reporting the original batch as complete.
+Treat a batch as complete only when its observable acceptance checks, the user's required visual review, and relevant automated verification all pass. Until the user reports visual acceptance, describe automated verification as complete but visual verification as pending. When a relevant failure requires a file change, repeat the affected verification and request another user review when the visible result may have changed.
